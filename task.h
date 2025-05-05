@@ -15,11 +15,10 @@ typedef struct Task {
     time_t endTime;
 } Task;
 
-// Function prototypes
 void createTask();
 void updateTask(int id);
 void deleteTask(int id);
-Task* getTask(int id);
+Task* getTaskbyID(int id);
 void listAllTasks();
 void searchTasksByStage(StageStatus status);
 void printTaskDetails(Task task);

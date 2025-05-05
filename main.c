@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "robot.h"
-
+#include "nav.h"
+#include "task.h"
 
 int main() {
     int main(){

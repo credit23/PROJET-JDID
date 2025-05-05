@@ -1,11 +1,15 @@
 #include "nav.h"
 #include <stdio.h>
 #include "robot.h"
+#include "task.h"
+#include <string.h>
+#include <stdlib.h>
+
 
 void managerobotssubmenu(){
     int choice;
     do {
-        // Display submenu 
+       
         printf("\n\033[36m===\033[33m 🤖 Manage Robots\033[36m ===\n"); 
         printf("\033[36m1.\033[97m ➕  Add New Robot\n");
         printf("\033[36m2.\033[97m ✏️   Edit Robot Information\n");
@@ -113,12 +117,47 @@ void managetaskssubmenu(){
     scanf("%d", &choice);
 
     switch(choice){
-        case 1: break;
-        case 2: break;
-        case 3: break;
-        case 4: break;
-        case 5: break;
-        case 6: break;
+        case 1: createTask(); break;
+        case 2: {
+            int taskId;
+            printf("Enter task ID to update: ");
+            scanf("%d", &taskId);
+            while(getchar() != '\n');
+            updateTask(taskId);
+            break;
+        }
+        case 3: {
+            int taskId;
+            printf("Enter task ID to delete: ");
+            scanf("%d", &taskId);
+            while(getchar() != '\n');
+            deleteTask(taskId);
+            break;
+        }
+        case 4:{
+            int id;
+            printf("Enter Task ID to view: ");
+            scanf("%d", &id);
+            while(getchar() != '\n');
+            
+            Task *task = getTaskbyID(id);
+            if(task != NULL) {
+                printTaskDetails(*task);
+            } else {
+                printf("\033[31mTask with ID %d not found!\033[0m\n", id);
+            }
+            break;
+        }
+            
+        case 5:listAllTasks(); break;
+        case 6: { 
+            int status;
+            printf("Enter status (0=PENDING, 1=ACTIVE, 2=COMPLETED): ");
+            scanf("%d", &status);
+            while(getchar() != '\n');
+            searchTasksByStage(status);
+            break;
+        }
         case 7: break;
         default: printf("Invalid choice! Try 1-7. \n");
         }

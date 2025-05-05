@@ -24,7 +24,6 @@ typedef struct {
     int size;
 } UndoStack;
 
-// Function prototypes
 void enqueue(Task task);
 Task dequeue();
 void displayQueue();
