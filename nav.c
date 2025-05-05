@@ -4,6 +4,7 @@
 #include "task.h"
 #include <string.h>
 #include <stdlib.h>
+#include "queue.h"
 
 
 void managerobotssubmenu(){
@@ -164,25 +165,58 @@ void managetaskssubmenu(){
     }while(choice!=7);
 }
 
-void controlqueuesubmenu(){
+void controlQueueSubmenu() {
     int choice;
-    do{
-    printf("\n\033[36m===\033[33m 🚦 Task Queue Control\033[36m ===\033[0m\n");
-    printf("\033[36m1.\033[97m 👀 View Queue\033[0m\n");
-    printf("\033[36m2.\033[97m ➕ Add Task to Queue\033[0m\n");
-    printf("\033[36m3.\033[97m ⏭️ Process Next Task\033[0m\n");
-    printf("\033[36m4.\033[97m 🧹 Clear Queue\033[0m\n");
-    printf("\033[36m5.\033[97m ↩️ Return to Main Menu\033[0m\n");
-    printf("Choose an option: ");
-    scanf("%d", &choice);
+    do {
+        printf("\n\033[36m===\033[33m 🚦 Task Queue Control\033[36m ===\033[0m\n");
+        printf("\033[36m1.\033[97m 👀 View Queue\033[0m\n");
+        printf("\033[36m2.\033[97m ➕ Add Task to Queue\033[0m\n");
+        printf("\033[36m3.\033[97m ⏭️ Process Next Task\033[0m\n");
+        printf("\033[36m4.\033[97m 🧹 Clear Queue\033[0m\n");
+        printf("\033[36m5.\033[97m ↩️ Return to Main Menu\033[0m\n");
+        printf("Choose an option: ");
+        scanf("%d", &choice);
+        while(getchar() != '\n');
 
-    switch(choice){
-        case 1: break;
-        case 2: break;
-        case 3: break;
-        case 4: break;
-        case 5: break;
-        default: printf("Invalid choice! Try 1-7. \n");
+        switch(choice) {
+            case 1:
+                displayQueue();
+                break;
+                
+            case 2: { // Add Task to Queue
+                int taskId;
+                printf("Enter Task ID to queue: ");
+                scanf("%d", &taskId);
+                while(getchar() != '\n');
+                
+                Task* task = getTask(taskId);
+                if(task) {
+                    enqueue(*task);
+                } else {
+                    printf("\033[31mTask %d not found!\033[0m\n", taskId);
+                }
+                break;
+            }
+            
+            case 3: { // Process Next Task
+                Task processed = dequeue();
+                if(processed.id != -1) {
+                    printf("\n\033[32mProcessing task %d:\033[0m\n", processed.id);
+                    printTaskDetails(processed);
+                }
+                break;
+            }
+            
+            case 4: // Clear Queue
+                freeQueue(&assemblyQueue);
+                printf("\033[32mQueue cleared successfully!\033[0m\n");
+                break;
+                
+            case 5: // Return to Main Menu
+                return;
+                
+            default:
+                printf("\033[31mInvalid choice! Try 1-5.\033[0m\n");
         }
-    }while(choice!=7);
+    } while(choice != 5); // Fixed loop condition
 }

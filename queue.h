@@ -3,6 +3,8 @@
 
 #include "task.h"
 
+extern TaskQueue assemblyQueue;
+
 typedef struct QueueNode {
     Task task;
     struct QueueNode* next;

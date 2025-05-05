@@ -3,9 +3,16 @@
 #include "robot.h"
 #include "nav.h"
 #include "task.h"
+#include "tree.h"
+#include "queue.h"
+#include "production.h"
+#include "file_io.h"
+#include <string.h>
 
-int main() {
+
+
     int main(){
+        TreeNode* factoryTree = createFactoryTree();
         int choice;
         do{
             printf("\033[36m\n===============\033[33m RFALM Menu\033[36m ===============\n");
@@ -21,13 +28,21 @@ int main() {
             printf("\033[36m10.\033[97m🚪  Exit \n");
             printf("Choose an option: ");
             scanf("%d", &choice);
+            while(getchar() != '\n');
     
             switch(choice){
-                case 1: manageRobotsSubmenu();break;
-                case 2: manageTasksSubmenu();break;
+                case 1: managerobotssubmenu();break;
+                case 2: managetaskssubmenu();break;
                 case 3: controlQueueSubmenu(); break;
                 case 4: assignTaskToRobot(); break;
-                case 5:     ;break;
+                case 5: {
+                    Task undoneTask = popUndo();
+                    if(undoneTask.id != -1) {
+                        enqueue(undoneTask);
+                        printf("Undid task %d\n", undoneTask.id);
+                    }
+                    break;
+                }
                 case 6: displayFactoryTree(factoryTree, 0); break;
                 case 7: generateProductionSummary(); break;
                 case 8: saveSession(); break;
@@ -38,9 +53,9 @@ int main() {
         }
         while(choice!=10);
     
-
-    
-                
-    }
-    return 0;
+    freeQueue();
+    freeStack();
+    freeFactoryTree(factoryTree);
+    return 0;        
 }
+
